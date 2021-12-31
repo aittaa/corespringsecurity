@@ -27,6 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         Account account = userRepository.findByUsername(username);
 
+        // id 찾지 못하는 예외
         if(account == null){
             throw new UsernameNotFoundException("UsernameNotFoundException");
         }
