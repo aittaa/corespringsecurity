@@ -1,24 +1,19 @@
 package io.security.corespringsecurity.security.provider;
 
-import io.security.corespringsecurity.security.common.FormAuthDetailsSource;
 import io.security.corespringsecurity.security.common.FormWebAuthDetails;
 import io.security.corespringsecurity.security.service.AccountContext;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import io.security.corespringsecurity.security.token.AjaxAuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class AjaxAuthProvider implements AuthenticationProvider {
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -43,24 +38,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         /* 여기서 추가 검증 절차 진행 가능 */
 
-        FormWebAuthDetails details = (FormWebAuthDetails) authentication.getDetails();
-        String secretKey = details.getSecretKey();
-        if(!"secret".equals(secretKey)){
-            throw new InsufficientAuthenticationException("InsufficientAuthenticationException");
-        }
-
-
-        // 인증 토큰 생성
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        accountContext.getAccount(), null, accountContext.getAuthorities()
-                );
-
-        return authenticationToken;
+        // 인증 토큰 생성 반환
+        return new AjaxAuthToken(
+                accountContext.getAccount(), null, accountContext.getAuthorities()
+        );
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return AjaxAuthToken.class.isAssignableFrom(authentication);
     }
 }
