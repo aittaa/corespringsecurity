@@ -13,24 +13,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class FormAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
         // 클라이언트 popup
 
-        String errorMessage = "ERROR";
+        String errMsg = "";
 
         if(exception instanceof UsernameNotFoundException){
-            errorMessage = "Invalid Username";
+            errMsg = "Invalid Username";
         }else if(exception instanceof BadCredentialsException){
-            errorMessage = "Invalid Password";
+            errMsg = "Invalid Password";
         } else if (exception instanceof InsufficientAuthenticationException){
-            errorMessage = "Invalid Secret Key";
+            errMsg = "Invalid Secret Key";
         }
 
 
-        setDefaultFailureUrl("/login?error=true&exception=" + errorMessage);
+        setDefaultFailureUrl("/login?error=true&exception=" + errMsg);
 
         super.onAuthenticationFailure(request, response, exception);
 

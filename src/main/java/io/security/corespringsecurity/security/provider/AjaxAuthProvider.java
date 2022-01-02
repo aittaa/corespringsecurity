@@ -1,12 +1,10 @@
 package io.security.corespringsecurity.security.provider;
 
-import io.security.corespringsecurity.security.common.FormWebAuthDetails;
 import io.security.corespringsecurity.security.service.AccountContext;
 import io.security.corespringsecurity.security.token.AjaxAuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -38,7 +36,7 @@ public class AjaxAuthProvider implements AuthenticationProvider {
 
         /* 여기서 추가 검증 절차 진행 가능 */
 
-        // 인증 토큰 생성 반환
+        // 인증 토큰 생성 반환 (Token은 Auth의 Child)
         return new AjaxAuthToken(
                 accountContext.getAccount(), null, accountContext.getAuthorities()
         );

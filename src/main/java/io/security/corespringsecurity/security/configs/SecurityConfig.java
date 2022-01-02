@@ -1,6 +1,6 @@
 package io.security.corespringsecurity.security.configs;
 
-import io.security.corespringsecurity.security.handler.CustomAccessDeniedHandler;
+import io.security.corespringsecurity.security.handler.FormAccessDeniedHandler;
 import io.security.corespringsecurity.security.provider.FormAuthenticationProvider;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -83,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Bean
     public AccessDeniedHandler accessDeniedHandler(){
-        CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
+        FormAccessDeniedHandler accessDeniedHandler = new FormAccessDeniedHandler();
         accessDeniedHandler.setErrorPage("/denied");
         return accessDeniedHandler;
     }
