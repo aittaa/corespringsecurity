@@ -1,5 +1,7 @@
 package io.security.corespringsecurity.security.configs;
 
+import io.security.corespringsecurity.security.common.AjaxAccessDeniedHandler;
+import io.security.corespringsecurity.security.common.AjaxLoginAuthEntryPoint;
 import io.security.corespringsecurity.security.filter.AjaxLoginProcessingFilter;
 import io.security.corespringsecurity.security.handler.AjaxAuthFailureHandler;
 import io.security.corespringsecurity.security.handler.AjaxAuthSuccessHandler;
@@ -27,6 +29,18 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationFailureHandler authenticationFailureHandler(){
         return new AjaxAuthFailureHandler();
     }
+
+
+    @Bean
+    public AjaxAccessDeniedHandler ajaxAccessDeniedHandler(){
+        return new AjaxAccessDeniedHandler();
+    }
+
+    @Bean
+    public AjaxLoginAuthEntryPoint ajaxLoginAuthEntryPoint(){
+        return new AjaxLoginAuthEntryPoint();
+    }
+
 
     @Bean
     public AjaxAuthProvider ajaxAuthProvider(){
@@ -56,10 +70,17 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/api/**") // `api/` 이하 URL에 한해서 설정 클래스 동작
                 .authorizeRequests()
+                .antMatchers("/api/messages").hasRole("MANAGER")
                 .anyRequest().authenticated()
 
         .and()
                 .addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .exceptionHandling()
+                .accessDeniedHandler(ajaxAccessDeniedHandler())
+                .authenticationEntryPoint(ajaxLoginAuthEntryPoint())
+                ;
 
         http.csrf().disable(); //for ajax post test
 

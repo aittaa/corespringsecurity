@@ -5,5 +5,23 @@ X-Requested-With: XMLHttpRequest
 
 {
   "username": "user",
-  "password": "12434"
+  "password": "1234"
 }
+
+###
+
+POST http://localhost:8080/api/login
+Content-Type: application/json
+X-Requested-With: XMLHttpRequest
+
+{
+"username": "manager",
+"password": "1234"
+}
+
+###
+
+
+GET http://localhost:8080/api/messages
+Content-Type: application/json
+X-Requested-With: XMLHttpRequest
